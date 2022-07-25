@@ -695,6 +695,30 @@ class QueryBuilder
         $query = apply_filters( 'query_builder_found_rows_query_' . $this->id, $query );
         return $wpdb->get_var( $query );
     }
+
+    /**
+     * Returns compiled SQL query as a string.
+     * @since 1.0.6
+     *
+     * @return string
+     */
+    public function to_sql()
+    {
+        $query = '';
+
+        $this->_query_select( $query );
+        $this->_query_from( $query );
+        $this->_query_join( $query );
+        $this->_query_where( $query );
+        $this->_query_group( $query );
+        $this->_query_having( $query );
+        $this->_query_order( $query );
+        $this->_query_offset( $query );
+
+        $query = apply_filters( 'query_builder_first_query', $query );
+        return apply_filters( 'query_builder_first_query_' . $this->id, $query );
+    }
+
     /**
      * Builds query's select statement.
      * @since 1.0.0
