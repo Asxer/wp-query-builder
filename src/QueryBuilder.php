@@ -702,7 +702,7 @@ class QueryBuilder
      * @param string &$query
      * @param bool   $calc_rows
      */
-    private function _query_select( &$query, $calc_rows = false )
+    protected function _query_select( &$query, $calc_rows = false )
     {
         $query = 'SELECT ' . ( $calc_rows ? 'SQL_CALC_FOUND_ROWS ' : '' ) . (
             is_array( $this->builder['select'] ) && count( $this->builder['select'] )
@@ -716,7 +716,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_from( &$query )
+    protected function _query_from( &$query )
     {
         $query .= ' FROM ' . $this->builder['from'];
     }
@@ -726,7 +726,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_join( &$query )
+    protected function _query_join( &$query )
     {
         foreach ( $this->builder['join'] as $join ) {
             $query .= ( !empty( $join['type'] ) ? ' ' . $join['type'] . ' JOIN ' : ' JOIN ' ) . $join['table'];
@@ -742,7 +742,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_where( &$query )
+    protected function _query_where( &$query )
     {
         for ( $i = 0; $i < count( $this->builder['where'] ); ++$i ) {
             $query .= ( $i === 0 ? ' WHERE ' : ' ' . $this->builder['where'][$i]['joint'] . ' ' )
@@ -755,7 +755,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_group( &$query )
+    protected function _query_group( &$query )
     {
         if ( count( $this->builder['group'] ) )
             $query .= ' GROUP BY ' . implode( ',', $this->builder['group'] );
@@ -766,7 +766,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_having( &$query )
+    protected function _query_having( &$query )
     {
         if ( $this->builder['having'] )
             $query .= ' HAVING ' . $this->builder['having'];
@@ -777,7 +777,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_order( &$query )
+    protected function _query_order( &$query )
     {
         if ( count( $this->builder['order'] ) )
             $query .= ' ORDER BY ' . implode( ',', $this->builder['order'] );
@@ -790,7 +790,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_limit( &$query )
+    protected function _query_limit( &$query )
     {
         global $wpdb;
         if ( $this->builder['limit'] )
@@ -804,7 +804,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_offset( &$query )
+    protected function _query_offset( &$query )
     {
         global $wpdb;
         if ( $this->builder['offset'] )
@@ -816,7 +816,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_delete( &$query )
+    protected function _query_delete( &$query )
     {
         $query .= trim( 'DELETE ' . ( count( $this->builder['join'] )
             ? preg_replace( '/\s[aA][sS][\s\S]+.*?/', '', $this->builder['from'] )
@@ -829,7 +829,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_update( &$query )
+    protected function _query_update( &$query )
     {
         $query .= trim( 'UPDATE ' . ( count( $this->builder['join'] )
             ? $this->builder['from'] . ',' . implode( ',', array_map( function( $join ) {
@@ -844,7 +844,7 @@ class QueryBuilder
      * 
      * @param string &$query
      */
-    private function _query_set( &$query )
+    protected function _query_set( &$query )
     {
         $query .= $this->builder['set'] ? ' SET ' . implode( ',', $this->builder['set'] ) : '';
     }
@@ -857,7 +857,7 @@ class QueryBuilder
      * 
      * @return mixed
      */
-    private function sanitize_value( $callback, $value )
+    protected function sanitize_value( $callback, $value )
     {
         if ( $callback === true )
             $callback = ( is_numeric( $value ) && strpos( $value, '.' ) !== false )
@@ -885,7 +885,7 @@ class QueryBuilder
      * 
      * @return string
      */
-    private function _builder_esc_like( $value )
+    protected function _builder_esc_like( $value )
     {
         global $wpdb;
         $wildcard = $this->options['wildcard'];
@@ -901,7 +901,7 @@ class QueryBuilder
      * 
      * @return string
      */
-    private function _builder_esc_like_wild_value( $value )
+    protected function _builder_esc_like_wild_value( $value )
     {
         return '%' . $this->_builder_esc_like( $value );
     }
@@ -913,7 +913,7 @@ class QueryBuilder
      * 
      * @return string
      */
-    private function _builder_esc_like_value_wild( $value )
+    protected function _builder_esc_like_value_wild( $value )
     {
         return $this->_builder_esc_like( $value ) . '%';
     }
@@ -925,7 +925,7 @@ class QueryBuilder
      * 
      * @return string
      */
-    private function _builder_esc_like_wild_wild( $value )
+    protected function _builder_esc_like_wild_wild( $value )
     {
         return '%' . $this->_builder_esc_like( $value ) . '%';
     }
